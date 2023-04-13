@@ -1,34 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { AddTodo, Layout, TodoList } from "./components"
+import DoneList from "./components/DoneList"
+import { useInputValue, useTodos } from "./hooks"
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { inputValue, changeInput, clearInput, keyInput } = useInputValue()
+  const {
+    todos,
+    doneTodos,
+    addTodo,
+    checkTodo,
+    uncheckTodo,
+    removeTodo,
+    removeDone,
+  } = useTodos()
 
+  const clearInputAndAddTodo = (_) => {
+    clearInput()
+    addTodo(inputValue)
+  }
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <Layout>
+      <AddTodo
+        inputValue={inputValue}
+        onInputChange={changeInput}
+        onButtonClick={clearInputAndAddTodo}
+        onInputKeyPress={(event) => keyInput(event, clearInputAndAddTodo)}
+      />
+      <TodoList
+        items={todos}
+        onItemCheck={(idx) => checkTodo(idx)}
+        onItemRemove={(idx) => removeTodo(idx)}
+      />
+      <DoneList
+        items={doneTodos}
+        onItemUncheck={(idx) => uncheckTodo(idx)}
+        onItemRemove={(idx) => removeDone(idx)}
+      />
+    </Layout>
   )
 }
 
