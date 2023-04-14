@@ -6,6 +6,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material"
+import { useAppSizeContext } from "../contexts"
 
 const AddTodo = ({
   inputValue,
@@ -15,6 +16,7 @@ const AddTodo = ({
 }) => {
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.up("sm"))
+  const { isLarge } = useAppSizeContext()
 
   return (
     <Paper style={{ margin: 16, padding: 16 }}>
@@ -26,6 +28,7 @@ const AddTodo = ({
             value={inputValue}
             onChange={onInputChange}
             onKeyPress={onInputKeyPress}
+            inputProps={{ style: { fontSize: isLarge ? 18 : "" } }}
             fullWidth
           />
         </Grid>
@@ -35,6 +38,7 @@ const AddTodo = ({
             color="secondary"
             variant="outlined"
             onClick={onButtonClick}
+            style={{ fontSize: isLarge ? 18 : "" }}
           >
             Add
           </Button>

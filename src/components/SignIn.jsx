@@ -2,8 +2,11 @@ import { GoogleAuthProvider, signInWithRedirect } from "firebase/auth"
 import { auth } from "../firebase"
 import { Grid, Typography, Button } from "@mui/material"
 import { Google } from "@mui/icons-material"
+import { useAppSizeContext } from "../contexts"
 
 const SignIn = () => {
+  const { isLarge } = useAppSizeContext()
+
   const signIn = () => {
     const provider = new GoogleAuthProvider()
     signInWithRedirect(auth, provider)
@@ -19,12 +22,12 @@ const SignIn = () => {
       spacing={2}
     >
       <Grid item>
-        <Typography variant="h3" fontWeight="500">
+        <Typography variant={isLarge ? "h2" : "h3"} fontWeight="500">
           Hi there!
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant="body1" textAlign="center">
+        <Typography variant={isLarge ? "h6" : "body1"} textAlign="center">
           In order to use our awesome Todo App, please log in via Google
           Authorization service
         </Typography>
@@ -33,9 +36,10 @@ const SignIn = () => {
         <Button
           aria-label="Sign In"
           variant="outlined"
-          startIcon={<Google />}
+          startIcon={<Google fontSize={isLarge ? "large" : ""} />}
           size="large"
           onClick={signIn}
+          style={{ fontSize: isLarge ? 18 : "" }}
         >
           Sign in!
         </Button>
