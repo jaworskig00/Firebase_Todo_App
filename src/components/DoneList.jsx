@@ -14,8 +14,8 @@ const DoneList = ({ items, onItemRemove, onItemUncheck }) => (
               {...todo}
               key={`TodoItem.${idx}`}
               divider={idx !== items.length - 1}
-              onItemRemove={() => onItemRemove(idx)}
-              onUndoneClick={() => onItemUncheck(idx)}
+              onItemRemove={() => onItemRemove(todo.id)}
+              onUndoneClick={() => onItemUncheck(todo.id)}
             />
           ))}
         </List>

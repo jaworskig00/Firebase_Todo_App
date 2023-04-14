@@ -14,8 +14,8 @@ const TodoList = ({ items, onItemRemove, onItemCheck }) => (
               {...todo}
               key={`TodoItem.${idx}`}
               divider={idx !== items.length - 1}
-              onRemoveClick={() => onItemRemove(idx)}
-              onDoneClick={() => onItemCheck(idx)}
+              onRemoveClick={() => onItemRemove(todo.id)}
+              onDoneClick={() => onItemCheck(todo.id)}
             />
           ))}
         </List>

@@ -1,4 +1,4 @@
-import { ListItem, Checkbox, IconButton, ListItemText } from "@mui/material"
+import { ListItem, IconButton, ListItemText } from "@mui/material"
 import { DeleteOutlined, Done } from "@mui/icons-material"
 import { green } from "@mui/material/colors"
 

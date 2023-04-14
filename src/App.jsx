@@ -1,41 +1,35 @@
-import { AddTodo, Layout, TodoList } from "./components"
-import DoneList from "./components/DoneList"
-import { useInputValue, useTodos } from "./hooks"
+import { collection } from "firebase/firestore"
+import { useCollection } from "react-firebase-hooks/firestore"
+import { useAuthState } from "react-firebase-hooks/auth"
+import { auth, db } from "./firebase"
+import { Layout, SignIn, Todo } from "./components"
 
 function App() {
-  const { inputValue, changeInput, clearInput, keyInput } = useInputValue()
-  const {
-    todos,
-    doneTodos,
-    addTodo,
-    checkTodo,
-    uncheckTodo,
-    removeTodo,
-    removeDone,
-  } = useTodos()
+  const [user] = useAuthState(auth)
+  const [todos] = useCollection(collection(db, "todos"))
+  const [done] = useCollection(collection(db, "done"))
 
-  const clearInputAndAddTodo = (_) => {
-    clearInput()
-    addTodo(inputValue)
-  }
+  const todosData = todos?.docs.map((doc) => ({
+    uid: doc.id,
+    ...doc.data(),
+  }))
+
+  const todosFiltered = todosData?.filter((todo) => todo.userId === user?.uid)
+
+  const doneData = done?.docs.map((doc) => ({
+    uid: doc.id,
+    ...doc.data(),
+  }))
+
+  const doneFiltered = doneData?.filter((done) => done.userId === user?.uid)
+
   return (
     <Layout>
-      <AddTodo
-        inputValue={inputValue}
-        onInputChange={changeInput}
-        onButtonClick={clearInputAndAddTodo}
-        onInputKeyPress={(event) => keyInput(event, clearInputAndAddTodo)}
-      />
-      <TodoList
-        items={todos}
-        onItemCheck={(idx) => checkTodo(idx)}
-        onItemRemove={(idx) => removeTodo(idx)}
-      />
-      <DoneList
-        items={doneTodos}
-        onItemUncheck={(idx) => uncheckTodo(idx)}
-        onItemRemove={(idx) => removeDone(idx)}
-      />
+      {user ? (
+        <Todo todosData={todosFiltered} doneData={doneFiltered} />
+      ) : (
+        <SignIn />
+      )}
     </Layout>
   )
 }
