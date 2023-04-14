@@ -54,8 +54,11 @@ const Todo = ({ todosData = [], doneData = [] }) => {
   }
 
   const clearInputAndAddTodo = (_) => {
+    const trimmedInputValue = inputValue.trim()
+    if (!trimmedInputValue || trimmedInputValue.length < 1) return
+
     clearInput()
-    addTodo(inputValue)
+    addTodo(trimmedInputValue)
   }
 
   return (
